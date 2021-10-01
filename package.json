@@ -14,10 +14,21 @@
 	],
 	"main": "./out/extension.js",
 	"contributes": {
+		"menus": {
+			"explorer/context": [
+				{
+					"command": "react-keeva-vs.helloWorld",
+					"title": "Hello World",
+					"group": "Keeva",
+					"when": "explorerResourceIsFolder == true"
+				}
+			]
+		},
 		"commands": [
 			{
 				"command": "react-keeva-vs.helloWorld",
-				"title": "Hello World"
+				"title": "Hello World",
+				"enablement": "explorerResourceIsFolder == true"
 			}
 		]
 	},
@@ -43,6 +54,6 @@
 		"@vscode/test-electron": "^1.6.2"
 	},
 	"dependencies": {
-		"@tiagodprovenzano/react-keeva": "^1.0.0"
+		"@tiagodprovenzano/react-keeva": "^1.0.11"
 	}
 }
