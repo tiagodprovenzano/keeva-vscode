@@ -1,0 +1,23 @@
+{
+    "Definitions": {
+        "prefix": ["@", "ini"],
+        "body": [
+            "@FILENAME=${1:file_name}",
+            "@EXT=${2:file_extension}\n"
+        ],
+        "description": "File definitions."
+    },
+
+    "Variable": {
+        "prefix": ["<%", "var"],
+        "body": [
+            "<%${1:variable_name}%>"
+        ]
+    },
+    "KebabVariable": {
+        "prefix": ["<%KEBAB", "kebab"],
+        "body": [
+            "<%KEBAB|${1:variable_name}%>"
+        ]
+    }
+}

@@ -14,6 +14,12 @@
 	],
 	"main": "./out/extension.js",
 	"contributes": {
+		"snippets": [
+			{
+				"language": "keeva",
+				"path": "./snippets/keeva.snippets.json"
+			}
+		],
 		"grammars": [
 			{
 				"language": "keeva",
