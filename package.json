@@ -3,6 +3,7 @@
 	"icon": "assets/keeva_icon.png",
 	"displayName": "Keeva",
 	"description": "Keeva task automation",
+	"publisher": "tiagodprovenzano",
 	"version": "0.0.1",
 	"engines": {
 		"vscode": "^1.60.0"
