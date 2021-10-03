@@ -1,0 +1,72 @@
+{
+    "scopeName": "source.keeva",
+    "patterns": [
+        {
+            "include": "#expression"
+        }
+    ],
+    "repository": {
+        "expression": {
+            "patterns": [
+                
+                {
+                    "include": "#text"
+                }
+                
+            ]
+        },
+        "text": {
+            "begin": "^",
+            "end": "$",
+            "name": "string",
+            "patterns": [
+                {
+                    "include": "#declaration"
+                },
+                {
+                    "include": "#variables"
+                }
+            ]
+        },
+        "declaration": {
+            "begin": "@(FILENAME|EXT)",
+            "end": "\n",
+            "name": "keyword.control.untitled",
+            "patterns":[
+                {"include": "#splitter"},
+                {"include": "#configValues"},
+                {"include": "#variables"}
+            ]
+        },
+        "declaration_equal": {
+            "match":"=",
+            "name": "keyword.constant"
+        },
+        "variables": {
+            "begin": "<%",
+            "end": "%>",
+            "name": "keyword.constant",
+            "patterns":[
+                {"include": "#method"},
+                {"include": "#splitter"},
+                {"include": "#variableName"}
+            ]
+        },
+        "method": {
+            "match": "KEBAB",
+            "name": "entity.name.function"
+        },
+        "splitter": {
+            "match": "=|\\|",
+            "name": "keyword.operator.js"
+        },
+        "variableName": {
+            "match": "([a-z\\d_-]{1,})",
+            "name": "variable.parameter"
+        },
+        "configValues": {
+            "match": "([a-z\\d_-]{1,})",
+            "name": "entity.name.type"
+        }
+    }
+}

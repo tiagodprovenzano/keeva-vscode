@@ -14,11 +14,27 @@
 	],
 	"main": "./out/extension.js",
 	"contributes": {
+		"grammars": [
+			{
+				"language": "keeva",
+				"scopeName": "source.keeva",
+				"path": "./syntaxes/keeva.tmGrammar.json"
+			}
+		],
+		"languages": [
+			{
+				"id": "keeva",
+				"aliases": ["Keeva", "KTL"],
+				"extensions": [
+					".kva"
+				],
+				"configuration": "./language-configuration.json"
+			}
+		],
 		"menus": {
 			"explorer/context": [
 				{
 					"command": "react-keeva-vs.helloWorld",
-					"title": "Hello World",
 					"group": "Keeva",
 					"when": "explorerResourceIsFolder == true"
 				}
@@ -27,7 +43,7 @@
 		"commands": [
 			{
 				"command": "react-keeva-vs.helloWorld",
-				"title": "Hello World",
+				"title": "New component...",
 				"enablement": "explorerResourceIsFolder == true"
 			}
 		]
@@ -54,6 +70,6 @@
 		"@vscode/test-electron": "^1.6.2"
 	},
 	"dependencies": {
-		"@tiagodprovenzano/react-keeva": "^1.0.11"
+		"@tiagodprovenzano/react-keeva": "^1.0.25"
 	}
 }

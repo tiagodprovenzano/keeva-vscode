@@ -1,7 +1,9 @@
 // The module 'vscode' contains the VS Code extensibility API
 // Import the module and reference it with the alias vscode in your code below
 import * as vscode from 'vscode';
-import {Component} from '@tiagodprovenzano/react-keeva/'
+import {create, ConfigFile, TemplateVariables, validateInputText} from '@tiagodprovenzano/react-keeva/'
+import * as fs from "fs"
+import * as path from "path"
 // this method is called when your extension is activated
 // your extension is activated the very first time the command is executed
 export function activate(context: vscode.ExtensionContext) {
@@ -14,27 +16,57 @@ export function activate(context: vscode.ExtensionContext) {
 	// Now provide the implementation of the command with registerCommand
 	// The commandId parameter must match the command field in package.json
 	let disposable = vscode.commands.registerCommand('react-keeva-vs.helloWorld', (uri: vscode.Uri) => {
-		console.log("uri.fsPath", uri.fsPath)
-		console.log('uri.path', uri.path)
-		console.log('uri.fragment', uri.fragment);
-		console.log('uri.scheme', uri);
-		const inputBox = vscode.window.createInputBox()
-		// The code you place here will be executed every time your command is executed
-		// Display a message box to the user
-		vscode.window.showInputBox(inputBox).then((componentName: string | undefined) => {
-			console.log(componentName);
-			if(componentName){
-				try {
-					
-					new Component(componentName, uri.fsPath).create()
-				} catch (error) {
-					console.log('====================================');
-					console.log(error);
-					console.log('====================================');
+		const workspaceFolders = vscode.workspace.workspaceFolders?.map(i => i.uri.path).filter((path) => uri.fsPath.includes(path))
+		let workspaceFolderPath = ''
+		if(workspaceFolders?.[0]){
+			workspaceFolderPath = workspaceFolders[0];
+		}
+		const config = new ConfigFile(workspaceFolderPath)
+		const picks: vscode.QuickPickItem[] = config.methods.map((item) => ({label: item.name}))
+
+		vscode.window.showQuickPick(picks, {canPickMany: false}).then(
+			(pick) => {
+				console.log({pick});
+				const command = config.methods.find((i) => i.name === pick?.label)
+				const commandDir = command?.folder || command?.name;
+				if(!commandDir){
+					vscode.window.showErrorMessage('Command not folder not found in keeva.config.json')
+					return
+				}
+				const templateDir: string = path.join(config.templateUri, commandDir)
+				const isTemplateFolderAvailable = fs.existsSync(templateDir)
+				if(!isTemplateFolderAvailable){
+					vscode.window.showErrorMessage('There are no templates to this file types. Aborting')
+					return
+				}
+				if(commandDir){
+					// @ts-ignore
+					const variables = new TemplateVariables(templateDir).variables
+					vscode.window.showInputBox({title: `Please use the pattern: [VARIABLE_NAME]=[VALUE]. Variables for ${command.name} are: <br/>${variables.join()}.`, placeHolder: variables.map(i => i + '=? ').join(' '), }).then((variablesInput: string | undefined) => {
+						console.log(variablesInput, commandDir);
+						if(variablesInput){
+							const isInputTextValid = validateInputText(variables, variablesInput)
+							if(!isInputTextValid.valid){
+								return vscode.window.showErrorMessage('Aborting.\nMissing values for: ' + isInputTextValid.missingVariables.join(','), '')
+							}
+							try {
+								create(
+									workspaceFolderPath,
+									uri.fsPath,
+									commandDir,
+									variablesInput
+								)
+								vscode.window.showInformationMessage('Success')
+							} catch (error) {
+								console.log('====================================');
+								console.log(error);
+								console.log('====================================');
+							}
+						}
+					});
 				}
 			}
-		});
-		// vscode.window.showInformationMessage('Hello World from React Keeva!');
+		)
 	});
 
 	context.subscriptions.push(disposable);
