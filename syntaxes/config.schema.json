@@ -1,0 +1,31 @@
+{
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "title": "Keeva Config JSON",
+    "description": "Keeva config json validation schema",
+    "type": "object",
+    "properties": {
+        "templatesUri": {
+            "type": "string",
+            "description": "URI where the keeva templates will be stored"
+        },
+        "methods": {
+            "description":"An array of template methods keeva will be able to execute",
+            "type": "array",
+            "items":{
+                "type": "object",
+                "properties": {
+                    "name": {
+                        "type": "string",
+                        "description": "Name that Keeva will use to show the options."
+                    },
+                    "folder": {
+                        "type":"string",
+                        "description": "Folder name where the methods templates will be stored, defaults to methods name."
+                    }
+                },
+                "required": ["name"]
+            }
+        }
+    },
+    "required": ["templatesUri", "methods"]
+}
