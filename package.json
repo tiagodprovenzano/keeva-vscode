@@ -17,7 +17,8 @@
 		"Language Packs"
 	],
 	"activationEvents": [
-		"onCommand:react-keeva-vs.helloWorld"
+		"onCommand:react-keeva-vs.create",
+		"onCommand:react-keeva-vs.init"
 	],
 	"main": "./out/extension.js",
 	"contributes": {
@@ -56,7 +57,7 @@
 		"menus": {
 			"explorer/context": [
 				{
-					"command": "react-keeva-vs.helloWorld",
+					"command": "react-keeva-vs.create",
 					"group": "Keeva",
 					"when": "explorerResourceIsFolder == true"
 				}
@@ -64,9 +65,13 @@
 		},
 		"commands": [
 			{
-				"command": "react-keeva-vs.helloWorld",
+				"command": "react-keeva-vs.create",
 				"title": "New component...",
 				"enablement": "explorerResourceIsFolder == true"
+			},
+			{
+				"command": "react-keeva-vs.init",
+				"title": "Init"
 			}
 		]
 	},
@@ -92,6 +97,6 @@
 		"@vscode/test-electron": "^1.6.2"
 	},
 	"dependencies": {
-		"@tiagodprovenzano/react-keeva": "^1.0.25"
+		"@tiagodprovenzano/react-keeva": "^1.0.27"
 	}
 }

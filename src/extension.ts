@@ -11,11 +11,21 @@ export function activate(context: vscode.ExtensionContext) {
 	// Use the console to output diagnostic information (console.log) and errors (console.error)
 	// This line of code will only be executed once when your extension is activated
 	console.log('Congratulations, your extension "react-keeva-vs" is now active!');
-	
+	let init = vscode.commands.registerCommand('react-keeva-vs.init', () => {
+		console.log(vscode.workspace.workspaceFolders);
+		const workspaceFolder = vscode.workspace.workspaceFolders?.[0].uri.path;
+		let workspaceFolderPath = ''
+		if(workspaceFolder){
+			workspaceFolderPath = workspaceFolder;
+			ConfigFile.init(workspaceFolderPath)
+			vscode.window.showInformationMessage('Success')
+		}
+	});
+
 	// The command has been defined in the package.json file
 	// Now provide the implementation of the command with registerCommand
 	// The commandId parameter must match the command field in package.json
-	let disposable = vscode.commands.registerCommand('react-keeva-vs.helloWorld', (uri: vscode.Uri) => {
+	let disposable = vscode.commands.registerCommand('react-keeva-vs.create', (uri: vscode.Uri) => {
 		const workspaceFolders = vscode.workspace.workspaceFolders?.map(i => i.uri.path).filter((path) => uri.fsPath.includes(path))
 		let workspaceFolderPath = ''
 		if(workspaceFolders?.[0]){
@@ -69,7 +79,7 @@ export function activate(context: vscode.ExtensionContext) {
 		)
 	});
 
-	context.subscriptions.push(disposable);
+	context.subscriptions.push(disposable, init);
 }
 
 // this method is called when your extension is deactivated
