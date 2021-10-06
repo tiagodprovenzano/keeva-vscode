@@ -66,12 +66,12 @@
 		"commands": [
 			{
 				"command": "react-keeva-vs.create",
-				"title": "New component...",
+				"title": "Keeva create...",
 				"enablement": "explorerResourceIsFolder == true"
 			},
 			{
 				"command": "react-keeva-vs.init",
-				"title": "Init"
+				"title": "Keeva init"
 			}
 		]
 	},
